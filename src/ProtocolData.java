@@ -13,15 +13,20 @@ public class ProtocolData {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             
-            br.readLine();
+            br.readLine(); // skipping one line for the header
             while ((line = br.readLine()) != null) {
                 String fields[] = line.split(",");
-
+                
                 if (fields.length == 1) {
-                    protocolMap.put(fields[0], "");
+                    String decimal = fields[0];
+                    
+                    protocolMap.put(decimal, "");
                 }
                 else {
-                    protocolMap.put(fields[0], fields[1]);
+                    String decimal = fields[0];
+                    String protocol = fields[1].toLowerCase();
+                
+                    protocolMap.put(decimal, protocol);
                 }
             }
             

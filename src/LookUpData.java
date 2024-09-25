@@ -12,7 +12,7 @@ public class LookUpData {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             
-            br.readLine();
+            br.readLine(); // skipping one line for the header
             while ((line = br.readLine()) != null) {
                 String fields[] = line.split(",");
                 
@@ -22,8 +22,8 @@ public class LookUpData {
                 }
 
                 String dstport = fields[0];
-                String protocol = fields[1];
-                String tag = fields[2];
+                String protocol = fields[1].toLowerCase();
+                String tag = fields[2].toLowerCase();
                 String key = dstport + " " + protocol;
 
                 lookupTable.put(key, tag);
@@ -33,10 +33,6 @@ public class LookUpData {
         } catch (Exception e) {
             System.out.println("error reading lookup table file");
             e.printStackTrace();
-        }
-        
-        for (Map.Entry<String, String> entry : lookupTable.entrySet()) {
-            System.out.println("key : " + entry.getKey() + " " + "value : "  + entry.getValue());
         }
 
         return lookupTable;
