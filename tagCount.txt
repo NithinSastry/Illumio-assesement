@@ -1,0 +1,11 @@
+Tag,Count
+null,949
+imap,6
+ftp,5
+smtp,7
+pop3,7
+telnet,8
+dns,2
+ssh,6
+http,4
+https,6

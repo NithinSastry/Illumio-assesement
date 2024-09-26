@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -13,6 +15,9 @@ public class App {
 
         /* count of matches for each tag */
         Map<String, Long> tagCount = new HashMap<>(); 
+
+        /** count of matches for port/protocol matches */
+        Map<String, Long> portprotocolCount = new HashMap<>();
 
         /* read and start analyzing the flow logs */
         final String flowLogFilePath = "/home/ns/Illumio-assesement/flow_logs.txt";
@@ -28,6 +33,7 @@ public class App {
                     throw new Exception("Invalid format for flow log file. atleast 14 fields expected as per example.");
                 }
 
+                String srcport = fields[5];
                 String dstport = fields[6];
                 String protocolNumber = fields[7];
                 String protocol = protocolMap.get(protocolNumber);
@@ -35,10 +41,52 @@ public class App {
                 String tag = lookupMap.get(lookupKey);
                 
                 tagCount.put(tag, tagCount.getOrDefault(tag, 0L) + 1);
+                    
+                String portProtocol = srcport + "," + protocol;
+                portprotocolCount.put(portProtocol, portprotocolCount.getOrDefault(portProtocol, 0L) + 1);
             }
+            
             br.close();
         } catch (IOException e) {
             System.out.println("error while reading / processing flow log file.");
+            e.printStackTrace();
+        }
+
+        /* Write tag count entries to file */
+        try {
+            final String tagCountFilePath = "/home/ns/Illumio-assesement/tagCount.txt";
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tagCountFilePath));
+
+            bw.write("Tag,Count");
+            bw.newLine();
+
+            for (Map.Entry<String, Long> entry : tagCount.entrySet()) {
+                bw.write(entry.getKey() + "," + entry.getValue());
+                bw.newLine();
+            }
+            bw.close();
+        }
+        catch(IOException e) {
+            System.out.println("error in writing tag count outupt to file");
+            e.printStackTrace();
+        }
+        
+        /* Write tag count entries to file */
+        try {
+            final String portProtcolCountFilPath = "/home/ns/Illumio-assesement/portProtocolCount.txt";
+            BufferedWriter bw = new BufferedWriter(new FileWriter(portProtcolCountFilPath));
+
+            bw.write("Port,Protocol,Count");
+            bw.newLine();
+
+            for (Map.Entry<String, Long> entry : portprotocolCount.entrySet()) {
+                bw.write(entry.getKey() + "," + entry.getValue());
+                bw.newLine();
+            }
+            bw.close();
+        }
+        catch(IOException e) {
+            System.out.println("error in writing port protcol count outupt to file");
             e.printStackTrace();
         }
     }
