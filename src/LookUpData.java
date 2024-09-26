@@ -4,11 +4,10 @@ import java.io.FileReader;
 
 public class LookUpData {
     
-    public static Map<String, String> loadData() {
+    public static Map<String, String> loadData(String filePath) {
         Map<String, String> lookupTable = new HashMap<>();
         
         try {
-            final String filePath = "/home/ns/Illumio-assesement/lookup_table.csv";
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             

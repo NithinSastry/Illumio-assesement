@@ -5,11 +5,10 @@ import java.io.IOException;
 
 public class ProtocolData {
     
-    public static Map<String, String> loadData() {
+    public static Map<String, String> loadData(String filePath) {
         Map<String, String> protocolMap = new HashMap<>();
         
         try {
-            final String filePath = "/home/ns/Illumio-assesement/protocol-numbers-1.csv";
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             String line;
             

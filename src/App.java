@@ -7,11 +7,16 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        if (args.length != 3) {
+            System.out.println("invalid arguments passed. correct usage");
+            System.out.println("<path to protocol number file> <path to lookup table file> <path to flow log file>");
+            return;
+        }
         /* load protocol mapping as per https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml */
-        Map<String, String> protocolMap = ProtocolData.loadData();
+        Map<String, String> protocolMap = ProtocolData.loadData(args[0]);
 
         /* load look up table data */
-        Map<String, String> lookupMap = LookUpData.loadData();
+        Map<String, String> lookupMap = LookUpData.loadData(args[1]);
 
         /* count of matches for each tag */
         Map<String, Long> tagCount = new HashMap<>(); 
@@ -20,7 +25,7 @@ public class App {
         Map<String, Long> portprotocolCount = new HashMap<>();
 
         /* read and start analyzing the flow logs */
-        final String flowLogFilePath = "/home/ns/Illumio-assesement/flow_logs.txt";
+        final String flowLogFilePath = args[2];
         try {
             BufferedReader br = new BufferedReader(new FileReader(flowLogFilePath));
             String line;
@@ -54,7 +59,7 @@ public class App {
 
         /* Write tag count entries to file */
         try {
-            final String tagCountFilePath = "/home/ns/Illumio-assesement/tagCount.txt";
+            final String tagCountFilePath = "./tagCount.txt";
             BufferedWriter bw = new BufferedWriter(new FileWriter(tagCountFilePath));
 
             bw.write("Tag,Count");
@@ -73,7 +78,7 @@ public class App {
         
         /* Write tag count entries to file */
         try {
-            final String portProtcolCountFilPath = "/home/ns/Illumio-assesement/portProtocolCount.txt";
+            final String portProtcolCountFilPath = "./portProtocolCount.txt";
             BufferedWriter bw = new BufferedWriter(new FileWriter(portProtcolCountFilPath));
 
             bw.write("Port,Protocol,Count");
