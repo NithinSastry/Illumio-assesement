@@ -8,7 +8,7 @@ import java.util.*;
 public class App {
     public static void main(String[] args) throws Exception {
         if (args.length != 3) {
-            System.out.println("invalid arguments passed. correct usage");
+            System.out.println("invalid arguments passed. correct usage : ");
             System.out.println("<path to protocol number file> <path to lookup table file> <path to flow log file>");
             return;
         }
